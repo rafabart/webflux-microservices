@@ -1,8 +1,14 @@
 package com.userservice.util;
 
+import com.userservice.dto.TransactionRequestDto;
+import com.userservice.dto.TransactionResponseDto;
+import com.userservice.dto.TransactionStatus;
 import com.userservice.dto.UserDto;
 import com.userservice.entity.User;
+import com.userservice.entity.UserTransaction;
 import org.springframework.beans.BeanUtils;
+
+import java.time.LocalDateTime;
 
 public class EntityDtoUtil {
 
@@ -18,5 +24,24 @@ public class EntityDtoUtil {
         BeanUtils.copyProperties(dto, user);
 
         return user;
+    }
+
+    public static UserTransaction toEntity(TransactionRequestDto dto) {
+        UserTransaction ut = new UserTransaction();
+
+        ut.setUserId((dto.getUserId()));
+        ut.setAmount(dto.getAmount());
+        ut.setTransactionDate(LocalDateTime.now());
+        return ut;
+    }
+
+
+    public static TransactionResponseDto toDto(TransactionRequestDto requestDto, TransactionStatus status) {
+        TransactionResponseDto responseDto = new TransactionResponseDto();
+
+        responseDto.setAmount(requestDto.getAmount());
+        responseDto.setUserId(requestDto.getUserId());
+        responseDto.setStatus(status);
+        return responseDto;
     }
 }
